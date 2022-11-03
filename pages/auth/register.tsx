@@ -19,6 +19,9 @@ const register = () => {
           password,
         }),
       });
+      if (user.status === 200) {
+        Router.push("/auth/signin");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,6 +48,7 @@ const register = () => {
                 <Input
                   placeholder="Enter your password"
                   value={password}
+                  type="password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button>

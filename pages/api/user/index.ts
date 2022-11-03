@@ -41,7 +41,7 @@ export default async function handle(
             password: await hash(password),
           },
         });
-        res.redirect(307, "/auth/signin");
+        return res.send(200);
       } catch (error) {
         console.log(error);
       }
