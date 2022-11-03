@@ -1,0 +1,48 @@
+import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "../../../lib/prisma";
+const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+  providers: [
+    CredentialsProvider({
+      // The name to display on the sign in form (e.g. "Sign in with...")
+      name: "Credentials",
+
+      credentials: {},
+      async authorize(credentials, req) {
+        // Add logic here to look up the user from the credentials supplied
+        const dbUser = await prisma.user.findUnique({
+          where: {
+            username: credentials?.username,
+          },
+        });
+
+        // Any object returned will be saved in `user` property of the JWT
+        if (dbUser) {
+          if (dbUser.password === credentials?.password) {
+            return { id: dbUser.id, name: dbUser.username };
+          }
+        }
+      },
+    }),
+  ],
+  pages: {
+    signIn: "/auth/signin",
+  },
+  adapter: PrismaAdapter(prisma),
+  secret: process.env.SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      user && (token = { ...token, user });
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
+  },
+};
+export default NextAuth(authOptions);
