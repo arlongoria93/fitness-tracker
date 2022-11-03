@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { verify } from "argon2";
 import prisma from "../../../lib/prisma";
 const authOptions: NextAuthOptions = {
   session: {
@@ -20,12 +21,16 @@ const authOptions: NextAuthOptions = {
           },
         });
 
-        // Any object returned will be saved in `user` property of the JWT
-        if (dbUser) {
-          if (dbUser.password === credentials?.password) {
-            return { id: dbUser.id, name: dbUser.username };
-          }
+        const validPassword = await verify(
+          dbUser.password,
+          credentials?.password
+        );
+        if (!validPassword) {
+          throw new Error("Invalid password");
         }
+        // Any object returned will be saved in `user` property of the JWT
+
+        return { id: dbUser.id, name: dbUser.username };
       },
     }),
   ],

@@ -2,9 +2,14 @@ import { getSession } from "next-auth/react";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { hash } from "argon2";
+import { type } from "os";
 // POST /api/post
 // Required fields in body: title
 // Optional fields in body: content
+type User = {
+  username: String;
+  password: String;
+};
 
 export default async function handle(
   req: NextApiRequest,
@@ -27,15 +32,16 @@ export default async function handle(
       }
 
       break;
-    case "PUT":
+    case "POST":
+      console.log("made it to put");
       try {
-        const result = await prisma.user.create({
+        const result: User = await prisma.user.create({
           data: {
             username: username,
-            password: hash(password),
+            password: await hash(password),
           },
         });
-        res.send(result);
+        res.redirect(307, "/auth/signin");
       } catch (error) {
         console.log(error);
       }
