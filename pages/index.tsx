@@ -3,6 +3,7 @@ import { Box, Button, Heading, Input, Text } from "dracula-ui";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Home(props) {
   const { data: session } = useSession();
@@ -13,6 +14,7 @@ export default function Home(props) {
       <div className="flex flex-col space-y-4 items-center drac-bg-black justify-center min-h-screen">
         <Heading color="pink">Hello {session?.user?.name || "Vampire"}</Heading>
         <Box className="flex flex-col space-y-8">
+          <Link href="/routine">Head to your routines</Link>
           <Button onClick={() => signOut()}>Sign Out</Button>
         </Box>
       </div>

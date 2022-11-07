@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button, Box, Text, Heading, Input } from "dracula-ui";
 import Router, { useRouter } from "next/router";
+import Link from "next/link";
 
-const register = () => {
+const register = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -64,12 +65,12 @@ const register = () => {
 
           <div className="text-grey-dark mt-6">
             Already have an account?
-            <a
+            <Link
               className="no-underline border-b border-blue text-blue"
-              href="../login/"
+              href="/auth/signin"
             >
               Log in
-            </a>
+            </Link>
             .
           </div>
         </Box>
