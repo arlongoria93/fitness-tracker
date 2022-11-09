@@ -1,4 +1,5 @@
 import { Text, Button, Heading, Avatar, Divider } from "dracula-ui";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -43,9 +44,31 @@ const Nav = (props: Props) => {
               >
                 My Routines
               </Text>
+              <Heading color="white" size="md">
+                Activities
+              </Heading>
+              <Link href="/activity">
+                <Text
+                  color="blackSecondary"
+                  className="hover:text-white transition duration-150 hover:ease-out"
+                >
+                  All Activities
+                </Text>
+              </Link>
             </Link>
+
+            <div className="mt-4">
+              <Text
+                onClick={() => signOut()}
+                as="a"
+                color="blackSecondary"
+                size="md"
+              >
+                Log out
+              </Text>
+            </div>
           </div>
-          <Divider />
+          <Divider className="opacity-60" />
         </div>
       )}
     </div>

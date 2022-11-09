@@ -47,7 +47,7 @@ export default function Home(
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button>
-                  <Text color="black">Register</Text>
+                  <Text color="black">Sign In</Text>
                 </Button>
               </Box>{" "}
             </form>

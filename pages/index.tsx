@@ -1,21 +1,41 @@
+import { useEffect } from "react";
 import Head from "next/head";
 import { Box, Button, Heading, Input, Text } from "dracula-ui";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, getSession } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import prisma from "../lib/prisma";
 import Link from "next/link";
+import { InferGetServerSidePropsType } from "next";
+import AllRoutines from "../components/AllRoutines";
 
-export default function Home(props) {
+export const getServerSideProps = async () => {
+  const routines = await prisma.routine.findMany();
+  routines.map((routine) => {
+    routine.createdAt = routine.createdAt.toString();
+    routine.updatedAt = routine.updatedAt.toString();
+  });
+  return {
+    props: {
+      routines,
+    },
+  };
+};
+
+export default function Home({
+      routines,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
   if (session) {
     return (
-      <div className="flex flex-col space-y-4 items-center drac-bg-black justify-center min-h-screen">
-        <Heading color="pink">Hello {session?.user?.name || "Vampire"}</Heading>
-        <Box className="flex flex-col space-y-8">
-          <Link href="/routine">Head to your routines</Link>
-          <Button onClick={() => signOut()}>Sign Out</Button>
+      <div className="flex flex-col  drac-bg-black space-y-24 min-h-screen">
+        <Box className="flex flex-col mt-12 space-y-4 p-8 justify-start">
+          <Heading>Browse through the hundrends of routines</Heading>
+          <Heading>created by others</Heading>
+        </Box>
+        <Box className="flex flex-col space-y-8 p-16">
+          <AllRoutines routines={routines} />
         </Box>
       </div>
     );
