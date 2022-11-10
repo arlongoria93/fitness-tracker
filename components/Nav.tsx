@@ -56,7 +56,14 @@ const Nav = (props: Props) => {
                 </Text>
               </Link>
             </Link>
-
+            <Link href="/activity/create">
+              <Text
+                color="blackSecondary"
+                className="hover:text-white transition duration-150 hover:ease-out"
+              >
+                Create an Activity
+              </Text>
+            </Link>
             <div className="mt-4">
               <Text
                 onClick={() => signOut()}
