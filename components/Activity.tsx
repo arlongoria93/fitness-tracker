@@ -18,8 +18,14 @@ const Activity = ({ activity }: Props) => {
         key={activity.id}
         className="flex flex-col space-y-2 bg-primary rounded p-4"
       >
-        <Heading color="orange">{activity.name}</Heading>
-        <Text size="sm" color="orange" className="opacity-80">
+        <Text color="orange" className="opacity-80">
+          Name:
+        </Text>
+        <Heading color="white">{activity.name}</Heading>
+        <Text color="orange" className="opacity-80">
+          Created At:
+        </Text>
+        <Text size="sm" color="white" className="opacity-80">
           {activity.createdAt}
         </Text>
       </div>
@@ -27,4 +33,4 @@ const Activity = ({ activity }: Props) => {
   );
 };
 
-export default Routine;
+export default Activity;

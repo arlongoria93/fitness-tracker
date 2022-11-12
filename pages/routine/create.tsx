@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 type Props = {};
 
 const Routine = (props) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const session = useSession();
 
   const onSubmit = async (data: { name: string; goal: string }) => {
@@ -16,6 +16,7 @@ const Routine = (props) => {
       },
       body: JSON.stringify({ id: session?.data?.user.id, ...data }),
     });
+    reset();
     return Routine;
   };
 

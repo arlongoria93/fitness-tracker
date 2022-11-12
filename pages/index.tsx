@@ -7,7 +7,11 @@ import { InferGetServerSidePropsType } from "next";
 import AllRoutines from "../components/AllRoutines";
 
 export const getServerSideProps = async () => {
-  const routines = await prisma.routine.findMany();
+  const routines = await prisma.routine.findMany({
+    include: {
+      user: true,
+    },
+  });
   routines.map((routine) => {
     routine.createdAt = routine.createdAt.toString();
     routine.updatedAt = routine.updatedAt.toString();
@@ -24,7 +28,7 @@ export default function Home({
     }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession();
   const router = useRouter();
-
+  console.log(session);
   if (session) {
     return (
       <div className="flex flex-col  drac-bg-black space-y-24 min-h-screen">
@@ -32,9 +36,7 @@ export default function Home({
           <Heading>Browse through the hundrends of routines</Heading>
           <Heading>created by others</Heading>
         </Box>
-        <Box className="flex flex-col space-y-8 p-16">
-          <AllRoutines routines={routines} />
-        </Box>
+        <AllRoutines routines={routines.slice(0, 5)} />
       </div>
     );
   } else {

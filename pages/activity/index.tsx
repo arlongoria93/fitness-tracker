@@ -2,15 +2,15 @@ import React from "react";
 import prisma from "../../lib/prisma";
 import { InferGetStaticPropsType } from "next";
 import { Heading, Box, Text } from "dracula-ui";
-import Routine from "../../components/Routine";
+import Activity from "../../components/Activity";
 
 type Props = {};
 
 const index = ({ acts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <div className="min-w-screen flex flex-col items-center space-y-4 justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center  drac-bg-black space-y-24 min-h-screen">
       {acts.map((act) => (
-        <Routine key={act.id} routine={act} />
+        <Activity key={act.id} activity={act} />
       ))}
     </div>
   );

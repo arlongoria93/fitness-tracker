@@ -1,12 +1,10 @@
 import { Text, Box, Button, Input, Select, Heading } from "dracula-ui";
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
 import { InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import { GoPlus } from "react-icons/go";
 import Routine from "../../components/Routine";
+import Link from "next/link";
 type Routine = {
   id: number;
   name: string;
@@ -19,7 +17,7 @@ type Props = {
 };
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-
+  const { user } = session;
   if (!session) {
     return {
       redirect: {
@@ -30,7 +28,7 @@ export async function getServerSideProps(context) {
   }
   const routines = await prisma.routine.findMany({
     where: {
-      userId: session?.data?.user.id,
+      userId: user.id,
     },
   });
   routines.map((routine) => {
@@ -46,8 +44,22 @@ const Routines = ({
   routines,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className="flex flex-col items-center drac-bg-black justify-center min-h-screen">
-      {routines && routines.map((routine) => <Routine routine={routine} />)}
+    <div className="flex flex-col space-y-4 items-center drac-bg-black justify-center min-h-screen">
+      <Heading>My Routines</Heading>
+      {routines ? (
+        routines.map((routine) => <Routine routine={routine} />)
+      ) : (
+        <>
+          <Heading color="pink" className="p-8">
+            No Routines...Would you like to create one?
+          </Heading>
+          <Link href="/routine/create">
+            <Button variant="outline" color="orange">
+              Yes
+            </Button>
+          </Link>
+        </>
+      )}
     </div>
   );
 };
