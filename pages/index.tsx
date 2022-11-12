@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-import Head from "next/head";
 import { Box, Button, Heading, Input, Text } from "dracula-ui";
-import { signIn, signOut, getSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import prisma from "../lib/prisma";
-import Link from "next/link";
 import { InferGetServerSidePropsType } from "next";
 import AllRoutines from "../components/AllRoutines";
 
@@ -27,6 +24,7 @@ export default function Home({
     }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession();
   const router = useRouter();
+
   if (session) {
     return (
       <div className="flex flex-col  drac-bg-black space-y-24 min-h-screen">

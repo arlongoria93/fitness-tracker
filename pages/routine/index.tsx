@@ -6,7 +6,17 @@ import { InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 import { GoPlus } from "react-icons/go";
-type Props = {};
+import Routine from "../../components/Routine";
+type Routine = {
+  id: number;
+  name: string;
+  goal: string;
+  createdAt: string;
+  updatedAt: string;
+};
+type Props = {
+  routines: Routine[];
+};
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
@@ -32,28 +42,14 @@ export async function getServerSideProps(context) {
   };
 }
 
-const Routine = ({
+const Routines = ({
   routines,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className="flex flex-col items-center drac-bg-black justify-center min-h-screen">
-      {routines &&
-        routines.map((routine) => (
-          <Box className="bg-primary p-8 rounded max-w-xl w-full flex flex-row justify-between items-center">
-            <Box className="flex flex-col">
-              <Text color="blackSecondary">Name</Text>{" "}
-              <Heading>{routine.name}</Heading>
-              <Text color="blackSecondary">Goal</Text>
-              <Text>{routine.goal}</Text>
-            </Box>
-            <GoPlus
-              className="drac-text-black-secondary hover:text-white"
-              size={30}
-            />
-          </Box>
-        ))}
+      {routines && routines.map((routine) => <Routine routine={routine} />)}
     </div>
   );
 };
 
-export default Routine;
+export default Routines;

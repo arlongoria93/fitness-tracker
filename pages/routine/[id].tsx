@@ -8,10 +8,18 @@ type Props = {};
 const RoutineById = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-  const { routine } = props;
+  const { routine, routineActivities } = props;
+  const routineActivitiesList = routineActivities.map(
+    (activity) => activity.activity
+  );
+  console.log(routineActivitiesList);
+
   return (
     <div>
       <Routine routine={routine} />
+      {routineActivitiesList?.map((activity) => (
+        <div key={activity.id}>{activity.name}</div>
+      ))}
     </div>
   );
 };
@@ -23,6 +31,13 @@ export const getServerSideProps = async (context) => {
     where: {
       id: Number(id),
     },
+    include: {
+      Routine_Activity: {
+        include: {
+          activity: true,
+        },
+      },
+    },
   });
   for (const key in routine) {
     if (typeof routine[key] === "object") {
@@ -32,6 +47,7 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       routine,
+      routineActivities: JSON.parse(routine.Routine_Activity),
     },
   };
 };
