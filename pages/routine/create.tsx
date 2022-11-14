@@ -1,4 +1,4 @@
-import { Text, Box, Button, Input, Select } from "dracula-ui";
+import { Box, Button, Input } from "dracula-ui";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";

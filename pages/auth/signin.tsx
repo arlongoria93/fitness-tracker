@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Text, Box, Button, Heading, Input } from "dracula-ui";
 import { signIn } from "next-auth/react";
 import { getSession } from "next-auth/react";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 
 export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -12,7 +12,7 @@ export default function Home(
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = async (e) => {
+  const handleSignIn = async (e: any) => {
     e.preventDefault();
     try {
       const res = await signIn("credentials", {
@@ -58,7 +58,7 @@ export default function Home(
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
   if (session) {

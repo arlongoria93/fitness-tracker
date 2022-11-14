@@ -13,23 +13,27 @@ export const authOptions: NextAuthOptions = {
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
 
-      credentials: {},
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
+
         const dbUser = await prisma.user.findUnique({
           where: {
             username: credentials?.username,
           },
         });
-
+        if (!dbUser) throw new Error("No user found");
+        if (!credentials?.password) throw new Error("No password provided");
         const validPassword = await verify(
           dbUser.password,
-          credentials?.password
+          credentials.password
         );
         if (!validPassword) {
           throw new Error("Invalid password");
         }
-        // Any object returned will be saved in `user` property of the JWT
 
         return { id: dbUser.id, name: dbUser.username };
       },
@@ -46,7 +50,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user;
+      if (token.user) {
+        session.user = token.user;
+      }
       return session;
     },
   },

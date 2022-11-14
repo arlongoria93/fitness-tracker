@@ -1,4 +1,4 @@
-import { Text, Button, Heading, Avatar, Divider } from "dracula-ui";
+import { Text, Heading } from "dracula-ui";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
@@ -96,6 +96,7 @@ const Nav = ({ user }: Props) => {
                 as="a"
                 color="blackSecondary"
                 size="md"
+                className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
               >
                 Log out:{" "}
                 {session?.user?.name?.charAt(0).toUpperCase() +
