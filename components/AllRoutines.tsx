@@ -1,8 +1,8 @@
 import React from "react";
 import { Heading, Text } from "dracula-ui";
 import Routine from "./Routine";
-
-const AllRoutines = ({ routines }) => {
+import { Routines as RoutinesType } from "../typings";
+const AllRoutines = ({ routines }: { routines: RoutinesType[] }) => {
   console.log(routines);
   return (
     <div className="space-y-4 flex flex-col">

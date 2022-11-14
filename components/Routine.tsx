@@ -1,21 +1,9 @@
 import React from "react";
 import { Heading, Text } from "dracula-ui";
 import Link from "next/link";
+import { Routine } from "../typings.d";
 
-type Props = {
-  routine: {
-    id: number;
-    name: string;
-    goal: string;
-    createdAt: string;
-    updatedAt: string;
-    user: {
-      username: string;
-    };
-  };
-};
-
-const Routine = ({ routine }: Props) => {
+const Routine = ({ routine }: { routine: Routine }) => {
   return (
     <Link href={`/routine/${routine.id}`}>
       <div

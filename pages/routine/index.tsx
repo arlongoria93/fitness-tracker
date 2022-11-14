@@ -1,23 +1,13 @@
 import { Text, Box, Button, Input, Select, Heading } from "dracula-ui";
 import React, { useState } from "react";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 import Routine from "../../components/Routine";
 import Link from "next/link";
-type Routine = {
-  id: number;
-  name: string;
-  goal: string;
-  createdAt: string;
-  updatedAt: string;
-};
-type Props = {
-  routines: Routine[];
-};
-export async function getServerSideProps(context) {
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-  const { user } = session;
   if (!session) {
     return {
       redirect: {
@@ -26,18 +16,21 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const routines = await prisma.routine.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-  routines.map((routine) => {
-    routine.createdAt = routine.createdAt.toString();
-    routine.updatedAt = routine.updatedAt.toString();
-  });
-  return {
-    props: { routines },
-  };
+  if (session?.user) {
+    const routines = await prisma.routine.findMany({
+      where: {
+        userId: session.user.id,
+      },
+    });
+    routines.map((routine) => {
+      routine.createdAt = routine.createdAt.toString();
+      routine.updatedAt = routine.updatedAt.toString();
+    });
+
+    return {
+      props: { routines },
+    };
+  }
 }
 
 const Routines = ({
