@@ -2,8 +2,7 @@ import React from "react";
 import prisma from "../../../lib/prisma";
 import { useRouter } from "next/router";
 import { InferGetStaticPropsType } from "next";
-import { Button, Heading, Box, Text } from "dracula-ui";
-import Activity from "../../../components/Activity";
+import { Heading, Box, Text } from "dracula-ui";
 import Link from "next/link";
 
 type Props = {};
@@ -41,7 +40,7 @@ const add = ({ acts }: InferGetStaticPropsType<typeof getStaticProps>) => {
             >
               <Heading color="orange">{activity.name}</Heading>
               <Text size="sm" color="orange" className="opacity-80">
-                {activity.createdAt}
+                Created: {activity.createdAt}
               </Text>
             </div>
           </button>
@@ -62,14 +61,18 @@ const add = ({ acts }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export const getStaticProps = async () => {
   const acts = await prisma.activity.findMany();
-  acts.map((act) => {
-    act.createdAt = act.createdAt.toString();
-    act.updatedAt = act.updatedAt.toString();
-  });
 
+  const activityViewer = acts.map((act) => {
+    return {
+      id: act.id,
+      name: act.name,
+      createdAt: act.createdAt.toLocaleDateString(),
+      updatedAt: act.updatedAt.toLocaleDateString(),
+    };
+  });
   return {
     props: {
-      acts,
+      acts: activityViewer,
     },
   };
 };

@@ -1,5 +1,4 @@
 import { Box, Button, Heading, Input, Text } from "dracula-ui";
-import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -7,7 +6,6 @@ import prisma from "../lib/prisma";
 import { InferGetServerSidePropsType } from "next";
 import AllRoutines from "../components/AllRoutines";
 import { GetServerSideProps } from "next";
-import { type } from "os";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   //fetch latest routines
@@ -36,14 +34,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       routines: RoutinesView,
     },
   };
-};
-
-type session = {
-  user: {
-    id: string;
-    name: string;
-  };
-  expires: string;
 };
 
 export default function Home({

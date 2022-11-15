@@ -1,23 +1,19 @@
 import React from "react";
-import { InferGetStaticPropsType, InferGetServerSidePropsType } from "next";
-import Routine from "../../../components/Routine";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import prisma from "../../../lib/prisma";
 import { Text, Heading, Button } from "dracula-ui";
 import Link from "next/link";
 import Activity from "../../../components/Activity";
+import { Activity as ActivityType } from "../../../typings.d";
 
-type Props = {};
-
-const RoutineById = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-  const { routine, routineActivities } = props;
+const RoutineById = ({
+  routine,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   console.log(routine);
-  const routineActivitiesList = routineActivities.map(
-    (activity) => activity.activity
-  );
+
+  const routineActivitiesList = routine.activites;
+
   const countOfActs = routineActivitiesList.length;
-  console.log(routineActivitiesList);
 
   return (
     <div className="flex flex-col items-center justify-center  drac-bg-black space-y-24 min-h-screen">
@@ -35,7 +31,7 @@ const RoutineById = (
       ) : (
         ""
       )}
-      {routineActivitiesList?.map((activity) => (
+      {routineActivitiesList?.map((activity: ActivityType) => (
         <div key={activity.id} className="w-1/2">
           <Activity activity={activity} />
         </div>
@@ -50,8 +46,8 @@ const RoutineById = (
 };
 
 export default RoutineById;
-export const getServerSideProps = async (context) => {
-  const { id } = context.params;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const id = params?.id;
   const routine = await prisma.routine.findUnique({
     where: {
       id: Number(id),
@@ -64,15 +60,27 @@ export const getServerSideProps = async (context) => {
       },
     },
   });
-  for (const key in routine) {
-    if (typeof routine[key] === "object") {
-      routine[key] = JSON.stringify(routine[key]);
-    }
-  }
+
+  const routineActivities = routine?.Routine_Activity.map((routine) => {
+    return {
+      id: routine.activity.id,
+      name: routine.activity.name,
+      createdAt: routine.activity.createdAt.toLocaleString(),
+      updatedAt: routine.activity.updatedAt.toLocaleString(),
+    };
+  });
+  const routineViewer = {
+    id: routine?.id,
+    name: routine?.name,
+    goal: routine?.goal,
+    userId: routine?.userId,
+    createdAt: routine?.createdAt.toLocaleString(),
+    updatedAt: routine?.updatedAt.toLocaleString(),
+    activites: routineActivities,
+  };
   return {
     props: {
-      routine,
-      routineActivities: JSON.parse(routine.Routine_Activity),
+      routine: routineViewer,
     },
   };
 };
