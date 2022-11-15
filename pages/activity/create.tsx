@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-type Props = {};
 
-const Routine = (props) => {
+const Routine = () => {
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = async (data: { name: string }) => {
     const Routine = await fetch("/api/activity", {
