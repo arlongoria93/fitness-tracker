@@ -1,11 +1,34 @@
 import { Box, Button, Input } from "dracula-ui";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-type Props = {};
 
-const Routine = (props) => {
-  const { register, handleSubmit, reset } = useForm();
+import { useForm, Resolver } from "react-hook-form";
+type FormValues = {
+  name: string;
+  goal: string;
+};
+
+const resolver: Resolver<FormValues> = async (values) => {
+  return {
+    values: values.name ? values : {},
+    errors: !values.name
+      ? {
+          name: {
+            type: "required",
+            message: "This is required.",
+          },
+        }
+      : {},
+  };
+};
+
+const Routine = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver });
   const session = useSession();
 
   const onSubmit = async (data: { name: string; goal: string }) => {

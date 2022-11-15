@@ -1,3 +1,4 @@
+import { MouseEvent, useState } from "react";
 import { Text, Heading } from "dracula-ui";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -7,21 +8,26 @@ import { useSession } from "next-auth/react";
 
 type Props = {};
 
-const Nav = ({ user }: Props) => {
+const Nav = (props: Props) => {
   //create toggle function
   const { data: session } = useSession();
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const navRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const closeDropDown = (e) => {
-      if (navRef.current && !navRef.current.contains(e.target)) {
+    //close nav if clicked outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    document.body.addEventListener("mousedown", closeDropDown);
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside as any);
+
     return () => {
-      document.body.removeEventListener("mousedown", closeDropDown);
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside as any);
     };
   }, []);
 
@@ -98,9 +104,11 @@ const Nav = ({ user }: Props) => {
                 size="md"
                 className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
               >
-                Log out:{" "}
-                {session?.user?.name?.charAt(0).toUpperCase() +
-                  session?.user?.name?.slice(1)}
+                {session
+                  ? "Log out:" +
+                    session.user?.name?.charAt(0).toUpperCase() +
+                    session?.user?.name?.slice(1)
+                  : ""}
               </Text>
             </div>
           </div>

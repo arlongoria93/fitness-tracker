@@ -11,8 +11,8 @@ const add = ({ acts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
   const { id } = router.query;
   const routineId = Number(id);
-  const handleAddActivity = async (routineId, id) => {
-    const routineActivity = await fetch("/api/routine_act", {
+  const handleAddActivity = async (routineId: number, id: number) => {
+    await fetch("/api/routine_act", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

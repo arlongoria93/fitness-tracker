@@ -1,7 +1,7 @@
 import React from "react";
 import { Heading, Text } from "dracula-ui";
 import Routine from "./Routine";
-import { Routines as RoutinesType } from "../typings";
+import { Routine as RoutinesType } from "../typings.d";
 const AllRoutines = ({ routines }: { routines: RoutinesType[] }) => {
   console.log(routines);
   return (
