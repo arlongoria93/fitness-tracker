@@ -5,6 +5,7 @@ import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 import Routine from "../../components/Routine";
 import Link from "next/link";
+import { Routines as RoutinesType } from "../../typings.d";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -22,20 +23,23 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         userId: session.user.id,
       },
     });
-    routines.map((routine) => {
-      routine.createdAt = routine.createdAt.toString();
-      routine.updatedAt = routine.updatedAt.toString();
+    const routinesViewer = routines.map((routine) => {
+      return {
+        id: routine.id,
+        name: routine.name,
+        goal: routine.goal,
+        createdAt: routine.createdAt.toLocaleDateString(),
+        updatedAt: routine.updatedAt.toLocaleDateString(),
+      };
     });
 
     return {
-      props: { routines },
+      props: { routines: routinesViewer },
     };
   }
 }
 
-const Routines = ({
-  routines,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Routines = ({ routines }: { routines: RoutinesType }) => {
   return (
     <div className="flex flex-col space-y-4 items-center drac-bg-black justify-center min-h-screen">
       <Heading>My Routines</Heading>
