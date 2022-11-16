@@ -3,11 +3,12 @@ import { Button, Box, Text, Heading, Input } from "dracula-ui";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 
-const register = (props) => {
+type Props = {};
+const register = (props: Props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: any) => {
     e.preventDefault();
     try {
       const user = await fetch("/api/user", {
