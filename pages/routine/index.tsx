@@ -49,11 +49,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 }
 
-const Routines = ({ routines }: { routines: RoutinesType }) => {
+const Routines = ({
+  routines,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div className="flex min-w-xl flex-col space-y-4  drac-bg-black  min-h-screen">
       <Heading className="self-center">My Routines</Heading>
-      <div>
+      <div className="flex flex-col">
         {routines ? (
           routines.map((routine) => <Routine routine={routine} />)
         ) : (
