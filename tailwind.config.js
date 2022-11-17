@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "#15171B",
+        dracBgPurple: "#9580ff",
       },
     },
   },
