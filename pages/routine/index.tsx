@@ -22,7 +22,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       where: {
         userId: session.user.id,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
     });
+    console.log(routines);
     const routinesViewer = routines.map((routine) => {
       return {
         id: routine.id,
@@ -30,6 +39,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         goal: routine.goal,
         createdAt: routine.createdAt.toLocaleDateString(),
         updatedAt: routine.updatedAt.toLocaleDateString(),
+        user: routine.user,
       };
     });
 
@@ -41,22 +51,24 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const Routines = ({ routines }: { routines: RoutinesType }) => {
   return (
-    <div className="flex flex-col space-y-4 items-center drac-bg-black justify-center min-h-screen">
-      <Heading>My Routines</Heading>
-      {routines ? (
-        routines.map((routine) => <Routine routine={routine} />)
-      ) : (
-        <>
-          <Heading color="pink" className="p-8">
-            No Routines...Would you like to create one?
-          </Heading>
-          <Link href="/routine/create">
-            <Button variant="outline" color="orange">
-              Yes
-            </Button>
-          </Link>
-        </>
-      )}
+    <div className="flex min-w-xl flex-col space-y-4  drac-bg-black  min-h-screen">
+      <Heading className="self-center">My Routines</Heading>
+      <div>
+        {routines ? (
+          routines.map((routine) => <Routine routine={routine} />)
+        ) : (
+          <>
+            <Heading color="pink" className="p-8">
+              No Routines...Would you like to create one?
+            </Heading>
+            <Link href="/routine/create">
+              <Button variant="outline" color="orange">
+                Yes
+              </Button>
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };

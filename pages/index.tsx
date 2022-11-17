@@ -12,7 +12,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const routines = await prisma.routine.findMany({
     include: {
-      user: true,
+      user: {
+        select: {
+          username: true,
+          id: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
@@ -26,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       userId: routine.userId,
       createdAt: routine.createdAt.toLocaleString(),
       updatedAt: routine.updatedAt.toLocaleString(),
+      user: routine.user,
     };
   });
 
