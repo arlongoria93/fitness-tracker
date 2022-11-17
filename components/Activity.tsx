@@ -13,23 +13,21 @@ type Props = {
 
 const Activity = ({ activity }: Props) => {
   return (
-    <Link href={`/activity/${activity.id}`}>
-      <div
-        key={activity.id}
-        className="flex flex-col space-y-2 bg-primary rounded p-4"
-      >
-        <Text color="orange" className="opacity-80">
-          Name:
-        </Text>
-        <Heading color="white">{activity.name}</Heading>
-        <Text color="orange" className="opacity-80">
-          Created At:
-        </Text>
-        <Text size="sm" color="white" className="opacity-80">
-          {activity.createdAt}
-        </Text>
-      </div>
-    </Link>
+    <div
+      key={activity.id}
+      className="flex flex-col w-full space-y-2 bg-primary rounded p-4"
+    >
+      <Text color="orange" className="opacity-80">
+        Name:
+      </Text>
+      <Heading color="white">{activity.name}</Heading>
+      <Text color="orange" className="opacity-80">
+        Created At:
+      </Text>
+      <Text size="sm" color="white" className="opacity-80">
+        {activity.createdAt}
+      </Text>
+    </div>
   );
 };
 
