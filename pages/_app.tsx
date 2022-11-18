@@ -3,6 +3,7 @@ import "dracula-ui/styles/dracula-ui.css";
 import type { AppProps as NextAppProps } from "next/app";
 import Layout from "../components/Layout";
 import { SessionProvider } from "next-auth/react";
+import "react-toastify/dist/ReactToastify.css";
 
 // make app a function component with props layout
 const App = ({ Component, pageProps }: NextAppProps) => {

@@ -6,17 +6,49 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Activity from "../../../components/Activity";
 import { Activity as ActivityType } from "../../../typings.d";
-
+import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/router";
 const RoutineById = ({
   routine,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const routineActivitiesList = routine.activites;
   const countOfActs = routineActivitiesList.length;
 
+  const notify = () => {
+    //wait 1 second then redirect to home page
+    setTimeout(() => {
+      router.push("/routine");
+    }, 1200);
+  };
+
+  const deleteRoutine = async (id: number) => {
+    const deleteRoutine = new Promise((resolve) =>
+      fetch(`/api/routine/${id}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response;
+          }
+          return Promise.reject(response);
+        })
+        .then((json) => setTimeout(() => resolve(json)))
+    );
+    const test = await toast
+      .promise(deleteRoutine, {
+        pending: "Deleting...",
+        success: "Routine deleted!",
+        error: "Error deleting routine",
+      })
+      .then(notify);
+    // delete routine
+  };
   if (session) {
     return (
-      <div className="flex flex-col items-center justify-center  drac-bg-black space-y-24 min-h-screen">
+      <div className="flex flex-col w-full items-center justify-center  drac-bg-black space-y-24 min-h-screen">
+        <ToastContainer />
         <Heading size="2xl" color="orange">
           {routine.name}
         </Heading>
@@ -32,15 +64,24 @@ const RoutineById = ({
           ""
         )}
         {routineActivitiesList?.map((activity: ActivityType) => (
-          <div key={activity.id} className="w-1/2">
-            <Activity activity={activity} />
-          </div>
+          <Activity activity={activity} />
         ))}
-        <Link href={`/routine/${routine.id}/add`}>
-          <Button variant="outline" color="orange">
-            Add Activites
-          </Button>
-        </Link>
+        <div className="flex flex-row space-x-8">
+          <Link href={`/routine/${routine.id}/add`}>
+            <Button variant="outline" color="orange">
+              Add Activites
+            </Button>
+          </Link>
+          <div className="opacity-60 hover:opacity-100  transition  duration-300 ease-in-out">
+            <Button
+              variant="outline"
+              color="red"
+              onClick={() => deleteRoutine(routine.id)}
+            >
+              Delete Routine
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
