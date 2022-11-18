@@ -15,7 +15,9 @@ const RoutineById = ({
   const router = useRouter();
   const routineActivitiesList = routine.activites;
   const countOfActs = routineActivitiesList.length;
-
+  if (session?.user.id !== routine.userId) {
+    router.push("/");
+  }
   const notify = () => {
     //wait 1 second then redirect to home page
     setTimeout(() => {
