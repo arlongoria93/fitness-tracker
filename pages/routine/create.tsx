@@ -25,7 +25,7 @@ const resolver: Resolver<FormValues> = async (values) => {
   };
 };
 
-const Routine = (props) => {
+const Routine = (props: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const {
