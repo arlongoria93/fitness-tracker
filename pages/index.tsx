@@ -29,12 +29,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
       user: routine.user,
     };
   });
-
-  return {
-    props: {
-      routines: RoutinesView,
-    },
-  };
+  if (!routines) {
+    return {
+      props: {
+        routines: null,
+      },
+    };
+  } else {
+    return {
+      props: {
+        routines: RoutinesView,
+      },
+    };
+  }
 };
 
 export default function Home({

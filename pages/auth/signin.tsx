@@ -5,6 +5,7 @@ import { Text, Box, Button, Heading, Input } from "dracula-ui";
 import { signIn } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
+import Link from "next/link";
 
 export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -19,9 +20,9 @@ export default function Home(
         username: userName,
         password,
       });
-      console.log(res);
+      res;
     } catch (error) {
-      console.log(error);
+      error;
     }
   };
   return (
@@ -49,7 +50,16 @@ export default function Home(
                 <Button>
                   <Text color="black">Sign In</Text>
                 </Button>
-              </Box>{" "}
+
+                <Text>
+                  Not registered? Create a account{" "}
+                  <Link href="/auth/register">
+                    <Text as="span" color="pink">
+                      here
+                    </Text>
+                  </Link>
+                </Text>
+              </Box>
             </form>
           </Box>
         </Box>
@@ -60,8 +70,8 @@ export default function Home(
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-
-  if (session) {
+  console.log(session);
+  if (session?.user) {
     return {
       redirect: {
         destination: "/",

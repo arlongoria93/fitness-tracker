@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
+import { parse } from "path";
 import prisma from "../../../lib/prisma";
 
 type Routine = {
@@ -14,6 +15,7 @@ export default async function handle(
 ) {
   const { method } = req;
   const { name, goal, id } = req.body;
+  console.log(id);
   switch (method) {
     case "GET":
       try {
@@ -40,6 +42,7 @@ export default async function handle(
         console.log(error);
       }
       break;
+
     default:
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);

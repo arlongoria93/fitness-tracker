@@ -14,6 +14,7 @@ const Nav = (props: Props) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  let userName = "";
 
   useEffect(() => {
     //close nav if clicked outside
@@ -30,6 +31,10 @@ const Nav = (props: Props) => {
       document.removeEventListener("mousedown", handleClickOutside as any);
     };
   }, []);
+
+  if (session?.user.name) {
+    userName = session.user.name[0].toUpperCase();
+  }
 
   return (
     <div
@@ -97,19 +102,34 @@ const Nav = (props: Props) => {
               </div>
             </div>
             <div className="mt-4 p-1">
-              <Text
-                onClick={() => signOut()}
-                as="a"
-                color="blackSecondary"
-                size="md"
-                className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
-              >
-                {session
-                  ? "Log out:" +
-                    session.user?.name?.charAt(0).toUpperCase() +
-                    session?.user?.name?.slice(1)
-                  : ""}
-              </Text>
+              {session ? (
+                <Text
+                  onClick={() => signOut()}
+                  color="blackSecondary"
+                  size="md"
+                  className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
+                >
+                  {session.user && (
+                    <div className="flex flex-row space-x-2 opacity-80">
+                      <Text>Log out: </Text>
+                      <Text color="green">
+                        {session.user.name[0].toUpperCase() +
+                          session.user.name.slice(1, session.user.name.length)}
+                      </Text>
+                    </div>
+                  )}
+                </Text>
+              ) : (
+                <Link href="/auth/signin">
+                  <Text
+                    color="blackSecondary"
+                    size="md"
+                    className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
+                  >
+                    Log in
+                  </Text>
+                </Link>
+              )}
             </div>
           </div>
         </div>

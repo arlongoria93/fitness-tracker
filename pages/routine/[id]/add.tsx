@@ -20,7 +20,6 @@ const add = ({ acts }: InferGetStaticPropsType<typeof getStaticProps>) => {
         activityId: id,
       }),
     });
-    console.log(routineId, id);
   };
   return (
     <div className="flex flex-col items-center justify-center  drac-bg-black space-y-24 min-h-screen">

@@ -31,7 +31,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       },
     });
-    console.log(routines);
+    routines;
     const routinesViewer = routines.map((routine) => {
       return {
         id: routine.id,
@@ -53,9 +53,9 @@ const Routines = ({
   routines,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className="flex min-w-xl flex-col space-y-4  drac-bg-black  min-h-screen">
+    <div className="flex min-w-xl flex-col space-y-4 justify-start  drac-bg-black  min-h-screen">
       <Heading className="self-center">My Routines</Heading>
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center space-y-8">
         {routines ? (
           routines.map((routine) => <Routine routine={routine} />)
         ) : (
@@ -69,6 +69,15 @@ const Routines = ({
               </Button>
             </Link>
           </>
+        )}
+        {routines && (
+          <div>
+            <Link href="/routine/create">
+              <Button variant="outline" color="orange">
+                Create a new routine
+              </Button>
+            </Link>
+          </div>
         )}
       </div>
     </div>

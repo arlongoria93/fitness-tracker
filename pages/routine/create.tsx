@@ -34,7 +34,7 @@ const Routine = (props: Props) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({ resolver });
-  console.log(session);
+  session;
   const onSubmit = async (data: { name: string; goal: string }) => {
     const Routine = await fetch("/api/routine", {
       method: "POST",
@@ -59,7 +59,7 @@ const Routine = (props: Props) => {
               {...register("goal")}
               placeholder="Routine Goal"
             />
-            <Button type="submit" size="lg">
+            <Button type="submit" variant="outline" size="lg">
               Submit
             </Button>
           </Box>

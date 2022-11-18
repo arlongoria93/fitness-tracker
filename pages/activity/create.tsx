@@ -24,7 +24,7 @@ const resolver: Resolver<FormValues> = async (values) => {
 const Routine = () => {
   const { data: session } = useSession();
 
-  console.log(session);
+  session;
   const {
     register,
     handleSubmit,
@@ -48,7 +48,7 @@ const Routine = () => {
         <form className="sm:max-w-lg w-full" onSubmit={handleSubmit(onSubmit)}>
           <Box className="flex w-full flex-col items-center space-y-4">
             <Input {...register("name")} placeholder="Activity Name" />
-            <Button type="submit" size="lg">
+            <Button type="submit" variant="outline" size="lg">
               Submit
             </Button>
           </Box>
