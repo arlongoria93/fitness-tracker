@@ -104,11 +104,15 @@ const Nav = (props: Props) => {
                 size="md"
                 className="hover:text-white transition duration-150 hover:ease-out hover:cursor-pointer"
               >
-                {session
-                  ? "Log out:" +
-                    session.user?.name?.charAt(0).toUpperCase() +
-                    session?.user?.name?.slice(1)
-                  : ""}
+                {session ? (
+                  "Log out:" +
+                  session.user?.name?.charAt(0).toUpperCase() +
+                  session?.user?.name?.slice(1)
+                ) : (
+                  <Text>
+                    <Link href="/auth/login">Log in</Link>
+                  </Text>
+                )}
               </Text>
             </div>
           </div>

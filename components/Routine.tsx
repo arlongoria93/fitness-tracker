@@ -9,7 +9,7 @@ const Routine = ({ routine }: { routine: Routine }) => {
   return (
     <div
       key={routine.id}
-      className="flex flex-row space-y-4 justify-between transition hover:ease-in-out   bg-primary rounded p-4"
+      className="flex flex-col w-full space-x-4 justify-between transition hover:ease-in-out md:flex-row   bg-primary rounded p-4"
     >
       <div className="">
         <Heading color="orange">{routine.name}</Heading>
@@ -27,13 +27,13 @@ const Routine = ({ routine }: { routine: Routine }) => {
         </div>
       </div>
       {routine.user && (
-        <div className="flex flex-col justify-between items-center">
-          <div className="h-full flex flex-col justify-center">
+        <div className="flex flex-col justify-between sm:space-y-4 items-center">
+          <div className="h-full flex flex-col space-y-4 justify-center">
             <Link href={`/routine/${routine.id}`}>
               <BsArrowRightCircleFill className="text-3xl opacity-60 hover:opacity-100" />{" "}
             </Link>
           </div>
-          <div>
+          <div className="">
             <Text size="sm" className="opacity-80">
               Created by:{" "}
             </Text>

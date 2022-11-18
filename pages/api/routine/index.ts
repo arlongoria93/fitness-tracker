@@ -40,6 +40,17 @@ export default async function handle(
         console.log(error);
       }
       break;
+    case "DELETE":
+      try {
+        const routine = await prisma.routine.delete({
+          where: {
+            id,
+          },
+        });
+        res.status(200).json(routine);
+      } catch (error) {
+        console.log(error);
+      }
     default:
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
