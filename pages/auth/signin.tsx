@@ -19,9 +19,9 @@ export default function Home(
         username: userName,
         password,
       });
-      console.log(res);
+      res;
     } catch (error) {
-      console.log(error);
+      error;
     }
   };
   return (
@@ -60,8 +60,8 @@ export default function Home(
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-
-  if (session) {
+  console.log(session);
+  if (session?.user) {
     return {
       redirect: {
         destination: "/",

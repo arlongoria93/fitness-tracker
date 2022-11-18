@@ -25,7 +25,7 @@ const register = (props: Props) => {
         Router.push("/auth/signin");
       }
     } catch (error) {
-      console.log(error);
+      error;
     } finally {
       setUserName("");
       setPassword("");

@@ -2,10 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import prisma from "../../../lib/prisma";
 
-type Activity = {
-  name: string;
-};
-
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -30,6 +26,17 @@ export default async function handle(
       }
 
       break;
+    case "DELETE":
+      try {
+        const act = await prisma.activity.delete({
+          where: {
+            id: req.body.id,
+          },
+        });
+        res.status(200).json(act);
+      } catch (error) {
+        console.log(error);
+      }
     default:
       res.setHeader("Allow", ["GET", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
